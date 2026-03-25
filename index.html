@@ -13,8 +13,8 @@ body {
 
 .map {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 1278px;
+    height: 676px;
     margin: 20px auto;
 }
 
@@ -30,13 +30,14 @@ body {
     opacity: 0;
 }
 
-/* overgang (cirkel groeit) */
+/* overgang: links → rechts reveal */
 .transition {
     opacity: 1;
-    mask-image: radial-gradient(circle at 50% 50%,
+    mask-image: linear-gradient(
+        to right,
         rgba(0,0,0,1) 0%,
-        rgba(0,0,0,1) var(--r, 0%),
-        rgba(0,0,0,0) calc(var(--r, 0%) + 10%)
+        rgba(0,0,0,1) var(--p, 0%),
+        rgba(0,0,0,0) calc(var(--p, 0%) + 10%)
     );
 }
 
@@ -65,6 +66,13 @@ body {
 let step = 0;
 const codes = ["steen", "ijzer", "goud", "diamant"];
 
+// ENTER toets
+document.getElementById("codeInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        checkCode();
+    }
+});
+
 function checkCode() {
     const input = document.getElementById("codeInput").value.toLowerCase();
 
@@ -77,13 +85,13 @@ function checkCode() {
             layer.classList.remove("hidden");
             layer.classList.add("transition");
 
-            let radius = 0;
+            let progress = 0;
 
             const interval = setInterval(() => {
-                radius += 8;
-                layer.style.setProperty('--r', radius + "%");
+                progress += 5;
+                layer.style.setProperty('--p', progress + "%");
 
-                if (radius >= 150) {
+                if (progress >= 100) {
                     clearInterval(interval);
 
                     layer.classList.remove("transition");
