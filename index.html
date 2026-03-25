@@ -20,8 +20,9 @@ body {
     flex-direction: column;
     height: 100%;
     align-items: center;
-    justify-content: center;
-    gap: 16px; /* gecontroleerde ruimte */
+    gap: 12px;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
 /* invoerveld */
@@ -32,6 +33,7 @@ body {
     text-align: center;
     font-family: 'Minecraftia', sans-serif;
     font-size: 14px;
+    flex-shrink: 0; /* blijft altijd zichtbaar */
 }
 
 .overlay input {
@@ -46,11 +48,23 @@ body {
 /* afbeelding */
 .map {
     position: relative;
-    height: 45dvh;           /* iets kleiner zodat alles past */
+
+    flex: 1;              /* neemt ALLE resterende ruimte */
+    width: 100%;
     max-width: 90vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-inner {
+    position: relative;
+    height: 100%;
     aspect-ratio: 1278 / 676;
 }
 
+/* lagen */
 .layer {
     position: absolute;
     width: 100%;
@@ -89,10 +103,12 @@ body {
     </div>
 
     <div class="map">
-        <img src="schatkaart-1.png" class="layer">
-        <img src="schatkaart-2.png" class="layer hidden" id="layer2">
-        <img src="schatkaart-3.png" class="layer hidden" id="layer3">
-        <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+        <div class="map-inner">
+            <img src="schatkaart-1.png" class="layer">
+            <img src="schatkaart-2.png" class="layer hidden" id="layer2">
+            <img src="schatkaart-3.png" class="layer hidden" id="layer3">
+            <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+        </div>
     </div>
 
 </div>
