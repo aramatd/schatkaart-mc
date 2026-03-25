@@ -14,6 +14,7 @@ body {
     background: #333;
 }
 
+/* layout */
 .container {
     display: flex;
     flex-direction: column;
@@ -21,8 +22,12 @@ body {
     align-items: center;
 }
 
-.spacer { flex: 1; }
+/* gelijke ruimtes */
+.spacer {
+    flex: 1;
+}
 
+/* invoerveld */
 .overlay {
     background: #c6c6c6;
     padding: 8px 12px;
@@ -32,14 +37,16 @@ body {
     font-size: 14px;
 }
 
-/* HIER zit de echte fix */
+/* afbeelding container */
 .map {
     position: relative;
-    max-width: 90vw;
-    max-height: 100%;
+
+    width: min(90vw, calc(100dvh * 1278 / 676));
+    height: auto;
     aspect-ratio: 1278 / 676;
 }
 
+/* lagen */
 .layer {
     position: absolute;
     width: 100%;
@@ -65,6 +72,7 @@ body {
 <body>
 
 <div class="container">
+
     <div class="spacer"></div>
 
     <div class="overlay">
@@ -82,21 +90,24 @@ body {
     </div>
 
     <div class="spacer"></div>
+
 </div>
 
 <script>
 let step = 0;
 const codes = ["steen","ijzer","goud","diamant"];
 
-document.getElementById("codeInput").addEventListener("keypress", e => {
+codeInput.addEventListener("keypress", e => {
     if (e.key === "Enter") checkCode();
 });
 
 function checkCode(){
     const input = codeInput.value.toLowerCase();
+
     if(input === codes[step]){
         step++;
         const layer = document.getElementById("layer"+(step+1));
+
         if(layer){
             layer.classList.remove("hidden");
             layer.classList.add("transition");
@@ -114,6 +125,7 @@ function checkCode(){
             },50);
         }
     }
+
     codeInput.value="";
 }
 </script>
