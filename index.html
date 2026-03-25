@@ -33,7 +33,7 @@ body {
     text-align: center;
     font-family: 'Minecraftia', sans-serif;
     font-size: 14px;
-    flex-shrink: 0; /* blijft altijd zichtbaar */
+    flex-shrink: 0;
 }
 
 .overlay input {
@@ -48,11 +48,9 @@ body {
 /* afbeelding */
 .map {
     position: relative;
-
-    flex: 1;              /* neemt ALLE resterende ruimte */
+    flex: 1;              /* neemt alle resterende ruimte */
     width: 100%;
     max-width: 90vw;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,7 +62,6 @@ body {
     aspect-ratio: 1278 / 676;
 }
 
-/* lagen */
 .layer {
     position: absolute;
     width: 100%;
@@ -90,6 +87,46 @@ body {
     opacity: 1;
     mask-image: none;
 }
+
+/* minecraft-stijl modal */
+.mc-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.mc-modal.hidden {
+    display: none;
+}
+
+.mc-box {
+    background: #c6c6c6;
+    border: 4px solid #555;
+    box-shadow: inset -4px -4px 0 #fff, inset 4px 4px 0 #000;
+    padding: 16px 24px;
+    text-align: center;
+    font-family: 'Minecraftia', sans-serif;
+}
+
+.mc-text {
+    margin-bottom: 12px;
+}
+
+.mc-box button {
+    font-family: 'Minecraftia', sans-serif;
+    padding: 6px 16px;
+    border: 2px solid #000;
+    background: #a0a0a0;
+    cursor: pointer;
+}
+
+.mc-box button:active {
+    box-shadow: inset 2px 2px 0 #000;
+}
 </style>
 </head>
 
@@ -111,6 +148,14 @@ body {
         </div>
     </div>
 
+</div>
+
+<!-- Minecraft-stijl foutmelding -->
+<div id="mcModal" class="mc-modal hidden">
+    <div class="mc-box">
+        <div class="mc-text">Foute code</div>
+        <button onclick="closeModal()">OK</button>
+    </div>
 </div>
 
 <script>
@@ -152,10 +197,18 @@ function checkCode() {
         }
 
     } else {
-        alert("Fout");
+        showModal(); // minecraft-stijl foutmelding
     }
 
     document.getElementById("codeInput").value = "";
+}
+
+function showModal() {
+    document.getElementById("mcModal").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("mcModal").classList.add("hidden");
 }
 </script>
 
