@@ -7,15 +7,32 @@
 
 <style>
 body {
-    text-align: center;
+    margin: 0;
+    display: flex;
+    height: 100vh;
     font-family: Arial, sans-serif;
 }
 
+/* linkerkant */
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background: #f0f0f0;
+}
+
+/* midden */
+.map-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* vierkante kaart */
 .map {
     position: relative;
-    width: 1278px;
-    height: 676px;
-    margin: 20px auto;
+    width: 80vmin;
+    height: 80vmin;
 }
 
 .layer {
@@ -30,14 +47,13 @@ body {
     opacity: 0;
 }
 
-/* overgang: links → rechts reveal */
+/* overgang: cirkel beweegt + groeit */
 .transition {
     opacity: 1;
-    mask-image: linear-gradient(
-        to right,
+    mask-image: radial-gradient(circle at var(--x, 0%) 50%,
         rgba(0,0,0,1) 0%,
-        rgba(0,0,0,1) var(--p, 0%),
-        rgba(0,0,0,0) calc(var(--p, 0%) + 10%)
+        rgba(0,0,0,1) var(--r, 0%),
+        rgba(0,0,0,0) calc(var(--r, 0%) + 10%)
     );
 }
 
@@ -51,22 +67,26 @@ body {
 </head>
 <body>
 
-<h2>Voer code in</h2>
-<input type="text" id="codeInput">
-<button onclick="checkCode()">OK</button>
+<div class="sidebar">
+    <h3>Voer code in</h3>
+    <input type="text" id="codeInput">
+    <button onclick="checkCode()">OK</button>
+</div>
 
-<div class="map">
-    <img src="schatkaart-1.png" class="layer">
-    <img src="schatkaart-2.png" class="layer hidden" id="layer2">
-    <img src="schatkaart-3.png" class="layer hidden" id="layer3">
-    <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+<div class="map-wrapper">
+    <div class="map">
+        <img src="schatkaart-1.png" class="layer">
+        <img src="schatkaart-2.png" class="layer hidden" id="layer2">
+        <img src="schatkaart-3.png" class="layer hidden" id="layer3">
+        <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+    </div>
 </div>
 
 <script>
 let step = 0;
 const codes = ["steen", "ijzer", "goud", "diamant"];
 
-// ENTER toets
+// enter toets
 document.getElementById("codeInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         checkCode();
@@ -89,7 +109,12 @@ function checkCode() {
 
             const interval = setInterval(() => {
                 progress += 5;
-                layer.style.setProperty('--p', progress + "%");
+
+                // positie van links → rechts
+                layer.style.setProperty('--x', progress + "%");
+
+                // radius groeit
+                layer.style.setProperty('--r', (progress * 1.2) + "%");
 
                 if (progress >= 100) {
                     clearInterval(interval);
