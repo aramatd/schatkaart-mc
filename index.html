@@ -5,22 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Schatkaart</title>
 
-<!-- Minecraft font -->
 <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
-    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
     font-family: Arial, sans-serif;
+}
+
+/* wrapper = "neppe rand" */
+.wrapper {
+    background: #333;
+    padding: 80px 20px 20px 20px; /* boven extra ruimte voor input */
+    box-sizing: content-box;
 }
 
 /* kaart */
 .map {
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
+    width: 1278px;
+    height: 676px;
 }
 
 .layer {
@@ -30,40 +40,21 @@ body {
     object-fit: cover;
 }
 
-/* overlay links gecentreerd */
+/* invoerveld in rand */
 .overlay {
     position: absolute;
-    top: 50%;
-    left: 30px;
-    transform: translateY(-50%);
-    
+    top: 20px;
+    left: 20px;
+
     background: #c6c6c6;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
-    
+
     font-family: 'Minecraftia', sans-serif;
-    color: black;
     font-size: 14px;
 }
 
-/* input styling */
-.overlay input {
-    display: block;
-    width: 180px;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.overlay button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-/* verborgen */
+/* hidden */
 .hidden {
     opacity: 0;
 }
@@ -78,34 +69,38 @@ body {
     );
 }
 
-/* eindstatus */
+/* eind */
 .visible {
     opacity: 1;
     mask-image: none;
 }
 </style>
-
 </head>
+
 <body>
 
-<div class="map">
-    <img src="schatkaart-1.png" class="layer">
-    <img src="schatkaart-2.png" class="layer hidden" id="layer2">
-    <img src="schatkaart-3.png" class="layer hidden" id="layer3">
-    <img src="schatkaart-4.png" class="layer hidden" id="layer4">
-
+<div class="wrapper">
+    
     <div class="overlay">
         <div>Voer code in</div>
         <input type="text" id="codeInput">
         <button onclick="checkCode()">OK</button>
     </div>
+
+    <div class="map">
+        <img src="schatkaart-1.png" class="layer">
+        <img src="schatkaart-2.png" class="layer hidden" id="layer2">
+        <img src="schatkaart-3.png" class="layer hidden" id="layer3">
+        <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+    </div>
+
 </div>
 
 <script>
 let step = 0;
 const codes = ["steen", "ijzer", "goud", "diamant"];
 
-// enter toets
+// enter
 document.getElementById("codeInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         checkCode();
@@ -127,7 +122,7 @@ function checkCode() {
             let progress = 0;
 
             const interval = setInterval(() => {
-                progress += 5;
+                progress += 3; // LANGZAMER gemaakt
 
                 layer.style.setProperty('--x', progress + "%");
                 layer.style.setProperty('--r', (progress * 1.2) + "%");
@@ -138,7 +133,7 @@ function checkCode() {
                     layer.classList.remove("transition");
                     layer.classList.add("visible");
                 }
-            }, 40);
+            }, 50); // LANGZAMER
         }
 
     } else {
