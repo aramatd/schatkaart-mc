@@ -15,15 +15,39 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #222;
+    background: #333;
     font-family: Arial, sans-serif;
 }
 
-/* wrapper = "neppe rand" */
-.wrapper {
-    background: #333;
-    padding: 80px 20px 20px 20px; /* boven extra ruimte voor input */
-    box-sizing: content-box;
+/* centrale kolom */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* ruimte tussen input en kaart */
+}
+
+/* invoerveld */
+.overlay {
+    background: #c6c6c6;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+
+    font-family: 'Minecraftia', sans-serif;
+    font-size: 14px;
+}
+
+.overlay input {
+    margin-top: 10px;
+    padding: 10px;
+    width: 200px;
+}
+
+.overlay button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
 }
 
 /* kaart */
@@ -40,21 +64,7 @@ body {
     object-fit: cover;
 }
 
-/* invoerveld in rand */
-.overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-
-    background: #c6c6c6;
-    padding: 15px;
-    border-radius: 8px;
-
-    font-family: 'Minecraftia', sans-serif;
-    font-size: 14px;
-}
-
-/* hidden */
+/* verborgen */
 .hidden {
     opacity: 0;
 }
@@ -69,7 +79,7 @@ body {
     );
 }
 
-/* eind */
+/* eindstatus */
 .visible {
     opacity: 1;
     mask-image: none;
@@ -79,8 +89,8 @@ body {
 
 <body>
 
-<div class="wrapper">
-    
+<div class="container">
+
     <div class="overlay">
         <div>Voer code in</div>
         <input type="text" id="codeInput">
@@ -100,7 +110,7 @@ body {
 let step = 0;
 const codes = ["steen", "ijzer", "goud", "diamant"];
 
-// enter
+// enter toets
 document.getElementById("codeInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         checkCode();
@@ -122,7 +132,7 @@ function checkCode() {
             let progress = 0;
 
             const interval = setInterval(() => {
-                progress += 3; // LANGZAMER gemaakt
+                progress += 3;
 
                 layer.style.setProperty('--x', progress + "%");
                 layer.style.setProperty('--r', (progress * 1.2) + "%");
@@ -133,7 +143,7 @@ function checkCode() {
                     layer.classList.remove("transition");
                     layer.classList.add("visible");
                 }
-            }, 50); // LANGZAMER
+            }, 50);
         }
 
     } else {
