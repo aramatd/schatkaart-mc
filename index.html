@@ -11,22 +11,16 @@
 body {
     margin: 0;
     height: 100dvh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: #333;
     font-family: Arial, sans-serif;
 }
 
-/* container blijft binnen scherm */
+/* container bovenaan */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
-    max-height: 100%;
-    width: 100%;
+    height: 100%;
 }
 
 /* invoerveld */
@@ -35,6 +29,7 @@ body {
     padding: 15px 20px;
     border-radius: 8px;
     text-align: center;
+    margin-top: 20px;
 
     font-family: 'Minecraftia', sans-serif;
     font-size: 18px;
@@ -56,21 +51,24 @@ body {
     font-size: 16px;
 }
 
-/* kaart schaalt mee */
+/* kaart vult rest van scherm */
 .map {
     position: relative;
-    width: 90vw;
+    width: 100%;
     max-width: 1278px;
 
-    aspect-ratio: 1278 / 676; /* behoud verhouding */
+    flex: 1; /* neemt resterende hoogte */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* lagen */
+/* afbeelding schaalt binnen ruimte */
 .layer {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* geen afsnijden */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 /* verborgen */
