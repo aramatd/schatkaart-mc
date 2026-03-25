@@ -20,11 +20,8 @@ body {
     flex-direction: column;
     height: 100%;
     align-items: center;
-}
-
-/* gelijke ruimtes */
-.spacer {
-    flex: 1;
+    justify-content: center;
+    gap: 16px; /* gecontroleerde ruimte */
 }
 
 /* invoerveld */
@@ -37,16 +34,23 @@ body {
     font-size: 14px;
 }
 
-/* afbeelding container */
+.overlay input {
+    margin-top: 6px;
+    padding: 6px;
+    width: 160px;
+    font-size: 14px;
+    font-family: 'Minecraftia', sans-serif;
+    color: black;
+}
+
+/* afbeelding */
 .map {
     position: relative;
-
-    width: min(90vw, calc(100dvh * 1278 / 676));
-    height: auto;
+    height: 45dvh;           /* iets kleiner zodat alles past */
+    max-width: 90vw;
     aspect-ratio: 1278 / 676;
 }
 
-/* lagen */
 .layer {
     position: absolute;
     width: 100%;
@@ -54,12 +58,18 @@ body {
     object-fit: contain;
 }
 
-.hidden { opacity: 0; }
+/* animatie */
+.hidden {
+    opacity: 0;
+}
 
 .transition {
     opacity: 1;
-    mask-image: radial-gradient(circle at var(--x,0%) 50%,
-        black 0%, black var(--r,0%), transparent calc(var(--r,0%) + 10%));
+    mask-image: radial-gradient(circle at var(--x, 0%) 50%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) var(--r, 0%),
+        rgba(0,0,0,0) calc(var(--r, 0%) + 10%)
+    );
 }
 
 .visible {
@@ -73,14 +83,10 @@ body {
 
 <div class="container">
 
-    <div class="spacer"></div>
-
     <div class="overlay">
         <div>Voer code in</div>
-        <input id="codeInput">
+        <input type="text" id="codeInput">
     </div>
-
-    <div class="spacer"></div>
 
     <div class="map">
         <img src="schatkaart-1.png" class="layer">
@@ -89,44 +95,51 @@ body {
         <img src="schatkaart-4.png" class="layer hidden" id="layer4">
     </div>
 
-    <div class="spacer"></div>
-
 </div>
 
 <script>
 let step = 0;
-const codes = ["steen","ijzer","goud","diamant"];
+const codes = ["steen", "ijzer", "goud", "diamant"];
 
-codeInput.addEventListener("keypress", e => {
-    if (e.key === "Enter") checkCode();
+document.getElementById("codeInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        checkCode();
+    }
 });
 
-function checkCode(){
-    const input = codeInput.value.toLowerCase();
+function checkCode() {
+    const input = document.getElementById("codeInput").value.toLowerCase();
 
-    if(input === codes[step]){
+    if (input === codes[step]) {
         step++;
-        const layer = document.getElementById("layer"+(step+1));
 
-        if(layer){
+        const layer = document.getElementById("layer" + (step + 1));
+
+        if (layer) {
             layer.classList.remove("hidden");
             layer.classList.add("transition");
 
-            let p = 0;
-            const i = setInterval(()=>{
-                p += 2;
-                layer.style.setProperty('--x', p+"%");
-                layer.style.setProperty('--r', (p*1.2)+"%");
-                if(p>=100){
-                    clearInterval(i);
+            let progress = 0;
+
+            const interval = setInterval(() => {
+                progress += 2;
+
+                layer.style.setProperty('--x', progress + "%");
+                layer.style.setProperty('--r', (progress * 1.2) + "%");
+
+                if (progress >= 100) {
+                    clearInterval(interval);
                     layer.classList.remove("transition");
                     layer.classList.add("visible");
                 }
-            },50);
+            }, 50);
         }
+
+    } else {
+        alert("Fout");
     }
 
-    codeInput.value="";
+    document.getElementById("codeInput").value = "";
 }
 </script>
 
