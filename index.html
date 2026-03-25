@@ -12,50 +12,58 @@ body {
     margin: 0;
     height: 100vh;
     background: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     font-family: Arial, sans-serif;
 }
 
-/* invoerveld bovenaan */
+/* layout */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+}
+
+/* gelijke grijze ruimtes */
+.spacer {
+    flex: 1;
+}
+
+/* invoerveld */
 .overlay {
     background: #c6c6c6;
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 8px;
     text-align: center;
-    margin: 20px 0;
 
     font-family: 'Minecraftia', sans-serif;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .overlay input {
-    margin-top: 10px;
-    padding: 10px;
-    width: 220px;
-    font-size: 18px;
+    margin-top: 6px;
+    padding: 6px;
+    width: 180px;
+    font-size: 14px;
     font-family: 'Minecraftia', sans-serif;
     color: black;
 }
 
 .overlay button {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 6px;
+    padding: 6px;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
 }
 
-/* kaart gebied */
+/* afbeelding */
 .map {
     position: relative;
-    width: 100%;
+    width: 90vw;
     max-width: 1278px;
-
-    height: calc(100vh - 160px); /* BELANGRIJK */
+    aspect-ratio: 1278 / 676;
 }
 
-/* afbeelding perfect schalen */
+/* lagen */
 .layer {
     position: absolute;
     width: 100%;
@@ -63,12 +71,10 @@ body {
     object-fit: contain;
 }
 
-/* verborgen */
 .hidden {
     opacity: 0;
 }
 
-/* cirkel fade */
 .transition {
     opacity: 1;
     mask-image: radial-gradient(circle at var(--x, 0%) 50%,
@@ -78,7 +84,6 @@ body {
     );
 }
 
-/* eind zichtbaar */
 .visible {
     opacity: 1;
     mask-image: none;
@@ -88,24 +93,33 @@ body {
 
 <body>
 
-<div class="overlay">
-    <div>Voer code in</div>
-    <input type="text" id="codeInput">
-    <button onclick="checkCode()">OK</button>
-</div>
+<div class="container">
 
-<div class="map">
-    <img src="schatkaart-1.png" class="layer">
-    <img src="schatkaart-2.png" class="layer hidden" id="layer2">
-    <img src="schatkaart-3.png" class="layer hidden" id="layer3">
-    <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+    <div class="spacer"></div>
+
+    <div class="overlay">
+        <div>Voer code in</div>
+        <input type="text" id="codeInput">
+        <button onclick="checkCode()">OK</button>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="map">
+        <img src="schatkaart-1.png" class="layer">
+        <img src="schatkaart-2.png" class="layer hidden" id="layer2">
+        <img src="schatkaart-3.png" class="layer hidden" id="layer3">
+        <img src="schatkaart-4.png" class="layer hidden" id="layer4">
+    </div>
+
+    <div class="spacer"></div>
+
 </div>
 
 <script>
 let step = 0;
 const codes = ["steen", "ijzer", "goud", "diamant"];
 
-// enter werkt ook
 document.getElementById("codeInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
         checkCode();
@@ -127,14 +141,13 @@ function checkCode() {
             let progress = 0;
 
             const interval = setInterval(() => {
-                progress += 2; // iets langzamer
+                progress += 2;
 
                 layer.style.setProperty('--x', progress + "%");
                 layer.style.setProperty('--r', (progress * 1.2) + "%");
 
                 if (progress >= 100) {
                     clearInterval(interval);
-
                     layer.classList.remove("transition");
                     layer.classList.add("visible");
                 }
