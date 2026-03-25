@@ -203,6 +203,7 @@ function checkCode() {
     document.getElementById("codeInput").value = "";
 }
 
+// Minecraft-stijl modal functies
 function showModal() {
     document.getElementById("mcModal").classList.remove("hidden");
 }
@@ -210,6 +211,14 @@ function showModal() {
 function closeModal() {
     document.getElementById("mcModal").classList.add("hidden");
 }
+
+// Enter-toets sluit de modal
+document.addEventListener("keydown", function(e) {
+    const modal = document.getElementById("mcModal");
+    if (!modal.classList.contains("hidden") && e.key === "Enter") {
+        closeModal();
+    }
+});
 </script>
 
 </body>
