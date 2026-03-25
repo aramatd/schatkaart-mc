@@ -14,7 +14,6 @@ body {
     background: #333;
 }
 
-/* layout */
 .container {
     display: flex;
     flex-direction: column;
@@ -22,12 +21,8 @@ body {
     align-items: center;
 }
 
-/* gelijke grijze ruimtes */
-.spacer {
-    flex: 1;
-}
+.spacer { flex: 1; }
 
-/* invoerveld */
 .overlay {
     background: #c6c6c6;
     padding: 8px 12px;
@@ -37,21 +32,11 @@ body {
     font-size: 14px;
 }
 
-.overlay input {
-    margin-top: 6px;
-    padding: 6px;
-    width: 160px;
-    font-size: 14px;
-    font-family: 'Minecraftia', sans-serif;
-    color: black;
-}
-
-/* afbeelding */
+/* HIER zit de echte fix */
 .map {
     position: relative;
-
-    height: 50dvh;          /* vaste, betrouwbare hoogte */
     max-width: 90vw;
+    max-height: 100%;
     aspect-ratio: 1278 / 676;
 }
 
@@ -62,18 +47,12 @@ body {
     object-fit: contain;
 }
 
-/* animatie */
-.hidden {
-    opacity: 0;
-}
+.hidden { opacity: 0; }
 
 .transition {
     opacity: 1;
-    mask-image: radial-gradient(circle at var(--x, 0%) 50%,
-        rgba(0,0,0,1) 0%,
-        rgba(0,0,0,1) var(--r, 0%),
-        rgba(0,0,0,0) calc(var(--r, 0%) + 10%)
-    );
+    mask-image: radial-gradient(circle at var(--x,0%) 50%,
+        black 0%, black var(--r,0%), transparent calc(var(--r,0%) + 10%));
 }
 
 .visible {
@@ -86,12 +65,11 @@ body {
 <body>
 
 <div class="container">
-
     <div class="spacer"></div>
 
     <div class="overlay">
         <div>Voer code in</div>
-        <input type="text" id="codeInput">
+        <input id="codeInput">
     </div>
 
     <div class="spacer"></div>
@@ -104,52 +82,39 @@ body {
     </div>
 
     <div class="spacer"></div>
-
 </div>
 
 <script>
 let step = 0;
-const codes = ["steen", "ijzer", "goud", "diamant"];
+const codes = ["steen","ijzer","goud","diamant"];
 
-document.getElementById("codeInput").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-        checkCode();
-    }
+document.getElementById("codeInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") checkCode();
 });
 
-function checkCode() {
-    const input = document.getElementById("codeInput").value.toLowerCase();
-
-    if (input === codes[step]) {
+function checkCode(){
+    const input = codeInput.value.toLowerCase();
+    if(input === codes[step]){
         step++;
-
-        const layer = document.getElementById("layer" + (step + 1));
-
-        if (layer) {
+        const layer = document.getElementById("layer"+(step+1));
+        if(layer){
             layer.classList.remove("hidden");
             layer.classList.add("transition");
 
-            let progress = 0;
-
-            const interval = setInterval(() => {
-                progress += 2;
-
-                layer.style.setProperty('--x', progress + "%");
-                layer.style.setProperty('--r', (progress * 1.2) + "%");
-
-                if (progress >= 100) {
-                    clearInterval(interval);
+            let p = 0;
+            const i = setInterval(()=>{
+                p += 2;
+                layer.style.setProperty('--x', p+"%");
+                layer.style.setProperty('--r', (p*1.2)+"%");
+                if(p>=100){
+                    clearInterval(i);
                     layer.classList.remove("transition");
                     layer.classList.add("visible");
                 }
-            }, 50);
+            },50);
         }
-
-    } else {
-        alert("Fout");
     }
-
-    document.getElementById("codeInput").value = "";
+    codeInput.value="";
 }
 </script>
 
